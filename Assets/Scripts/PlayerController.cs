@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private CharacterController characterController;
     [SerializeField] private CinemachineCamera cinemachineCamera;
+    [SerializeField] private CharacterData characterData;
 
     private Vector2 move;
 
@@ -16,7 +17,9 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        characterController.Move(GetForward() * move.y + GetRight() * move.x * Time.deltaTime);
+        Vector3 direction = (GetForward() * move.y + GetRight() * move.x).normalized;
+        characterController.Move(direction * characterData.MoveSpeed * Time.deltaTime);
+
     }
 
     private Vector3 GetForward()

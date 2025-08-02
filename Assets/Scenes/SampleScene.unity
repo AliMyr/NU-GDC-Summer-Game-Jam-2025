@@ -1205,6 +1205,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterController: {fileID: 1874736403}
   cinemachineCamera: {fileID: 31707305}
+  characterData: {fileID: 11400000, guid: 040c4de460e36d540af82e92fca4b251, type: 2}
 --- !u!114 &1874736405
 MonoBehaviour:
   m_ObjectHideFlags: 0
