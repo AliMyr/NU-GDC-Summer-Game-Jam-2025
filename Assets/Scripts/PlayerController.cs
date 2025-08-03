@@ -14,7 +14,12 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private Vector3 velocity;
 
+    private IHealth health;
+    private float meleeDamage;
+
     private Vector2 move;
+
+
 
     private void Awake()
     {
@@ -27,6 +32,8 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
 
         currentSpeed = characterData.WalkSpeed;
+        meleeDamage = characterData.MeleeDamage;
+        health = new PlayerHealth(characterData.MaxHealth);
     }
 
     public void OnMove(InputValue inputValue) 
@@ -54,6 +61,21 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void OnAttack(InputValue inputValue)
+    {
+        if (!inputValue.isPressed || !health.IsAlive) return;
+
+        Ray ray = new Ray(cinemachineCamera.transform.position, cinemachineCamera.transform.forward);
+        if (Physics.Raycast(ray, out RaycastHit hit, 2f))
+        {
+            if (hit.collider.TryGetComponent<IHealth>(out var targetHealth))
+            {
+                targetHealth.TakeDamage(meleeDamage);
+            }
+        }
+    }
+
+
     private void Update()
     {
         isGrounded = characterController.isGrounded;
@@ -68,6 +90,13 @@ public class PlayerController : MonoBehaviour
         velocity = new Vector3(horizontalMove.x, verticalVelocity, horizontalMove.z);
 
         characterController.Move(velocity * Time.deltaTime);
+
+        if (!health.IsAlive)
+        {
+            // можно вызвать событие смерти, отключить управление и т.п.
+            return;
+        }
+
     }
 
 
