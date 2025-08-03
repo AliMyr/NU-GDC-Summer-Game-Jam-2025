@@ -10,6 +10,10 @@ public class PlayerController : MonoBehaviour
 
     private float currentSpeed;
 
+    private float verticalVelocity;
+    private bool isGrounded;
+    private Vector3 velocity;
+
     private Vector2 move;
 
     private void Awake()
@@ -42,12 +46,30 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void OnJump(InputValue inputValue)
+    {
+        if (isGrounded && inputValue.isPressed)
+        {
+            verticalVelocity = Mathf.Sqrt(characterData.JumpHeight * -2f * characterData.Gravity);
+        }
+    }
+
     private void Update()
     {
-        Vector3 direction = (GetForward() * move.y + GetRight() * move.x).normalized;
-        characterController.Move(direction * currentSpeed * Time.deltaTime);
+        isGrounded = characterController.isGrounded;
 
+        if (isGrounded && verticalVelocity < 0)
+            verticalVelocity = -2f; // принудительное прилипание к земле
+
+        Vector3 direction = (GetForward() * move.y + GetRight() * move.x).normalized;
+        Vector3 horizontalMove = direction * currentSpeed;
+
+        verticalVelocity += characterData.Gravity * Time.deltaTime;
+        velocity = new Vector3(horizontalMove.x, verticalVelocity, horizontalMove.z);
+
+        characterController.Move(velocity * Time.deltaTime);
     }
+
 
     private Vector3 GetForward()
     {
