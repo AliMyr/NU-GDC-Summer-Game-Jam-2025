@@ -16,3 +16,8 @@ MonoBehaviour:
   sprintSpeed: 10
   jumpHeight: 1
   gravity: -10.81
+  maxHealth: 100
+  meleeDamage: 20
+  attackRange: 0
+  attackDamage: 0
+  attackCooldown: 0
