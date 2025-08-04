@@ -28,8 +28,8 @@ public class PlayerController : MonoBehaviour
 
     private void Initialize(CharacterData characterData)
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
 
         currentSpeed = characterData.WalkSpeed;
         meleeDamage = characterData.MeleeDamage;
