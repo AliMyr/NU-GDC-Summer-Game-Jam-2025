@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class UIMenuManager : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class UIMenuManager : MonoBehaviour
 
 
     }
-    
+
     public void PlayGame()
     {
         Time.timeScale = 1f;
@@ -38,12 +39,38 @@ public class UIMenuManager : MonoBehaviour
 
         // Implement settings functionality here
         Debug.Log("Settings button clicked.");
-
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void ExitGame()
     {
         Application.Quit();
     }
+
+    private void Update()
+    {
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            if (MainMenuPanel.activeSelf)
+            {
+                PlayGame();
+            }
+            else
+            {
+                Time.timeScale = 0f;
+                MainMenuPanel.SetActive(true);
+                GameUIPanel.SetActive(false);
+                if (mainPlayer != null)
+                {
+                    mainPlayer.SetActive(false);
+                }
+
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+        }
+    }
+
 
 }
